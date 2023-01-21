@@ -18,11 +18,13 @@ cd scripts
 
 ### (only once) Prepare custom workspace
 
-Prepare workspace, but only once. After the first setup, only package dependencies must be installed on the robot's computer.
+Prepare your custom workspace in the home directory of the robot.
+Since files in the home directory are persistent, this must only be done once.
+After the first setup, only package dependencies must be installed on the robot's computer.
 
 ```sh
 cd scripts
-./script_via_ssh.sh real_prep_ws.sh
+./real_prep_ws.sh
 ```
 
 ### Launch custom configuration of the navigation stack
