@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- === ARGUMENTS ========================================================================== -->
+    <!-- (full|short|hard) -->
+    <arg name="scenario" default="hard"/>
+
+    <arg name="perception_launch" default="true"/>
+    <arg name="perception_viz" default="false"/>
+    <arg name="perception_input_topic" default="/spencer/perception/tracked_persons"/>
+
+    <arg name="navigation_launch" default="true"/>
+    <arg name="navigation_benchmark" default="true"/>
+    <arg name="external_map" default="false"/>
+
+    <arg name="global_planner" default="navfn"/>
+    <arg name="local_planner" default="teb"/>
+    <arg name="nav_state" default="localization"/>
+
+    <arg name="narrow_laser_range" default="false"/>
+
+    <!-- Run debugging tools -->
+    <arg name="run_nav_viz" default="false"/>
+    <arg name="run_reconfigure" default="false"/>
+    <arg name="run_plot" default="false"/>
+
+    <!-- Automatic publishing of navigation goal -->
+    <arg name="publish_goal" default="true"/>
+    <arg name="publish_goal_delay" default="10"/>
+    <arg name="goal_file" value="$(find tiago_social_experiments_real)/config/012_goal.yaml"/>
+
+    <!-- Location-specific -->
+    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_sim_localization/map.yaml"/>
+
+    <!-- === NODES ============================================================================== -->
+    <include file="$(find tiago_social_bringup)/launch/nav_perception_bringup.launch">
+        <arg name="nav_state" value="$(arg nav_state)"/>
+        <arg name="narrow_laser_range" value="$(arg narrow_laser_range)"/>
+        <arg name="navigation_launch" value="$(arg navigation_launch)"/>
+        <arg name="external_map" value="$(arg external_map)"/>
+        <arg name="map_file" value="$(arg map_file)"/>
+        <arg name="global_planner" value="$(arg global_planner)"/>
+        <arg name="local_planner" value="$(arg local_planner)"/>
+
+        <arg name="localization_pose_estimate" if="$(eval scenario == 'full')" value="$(find tiago_social_experiments_real)/config/012_pose_full.yaml"/>
+        <arg name="localization_pose_estimate" if="$(eval scenario == 'hard')" value="$(find tiago_social_experiments_real)/config/012_pose_hard.yaml"/>
+        <arg name="localization_pose_estimate" if="$(eval scenario == 'short')" value="$(find tiago_social_experiments_real)/config/012_pose_short.yaml"/>
+
+        <arg name="navigation_benchmark" value="$(arg navigation_benchmark)"/>
+        <arg name="perception_launch" value="$(arg perception_launch)"/>
+        <arg name="perception_viz" value="$(arg perception_viz)"/>
+        <arg name="perception_input_topic" value="$(arg perception_input_topic)"/>
+        <arg name="publish_goal" value="$(arg publish_goal)"/>
+        <arg name="publish_goal_delay" value="$(arg publish_goal_delay)"/>
+        <arg name="goal_file" value="$(arg goal_file)"/>
+
+        <!-- debugging tools -->
+        <arg name="run_nav_viz" value="$(arg run_nav_viz)"/>
+        <arg name="run_reconfigure" value="$(arg run_reconfigure)"/>
+        <arg name="run_plot" value="$(arg run_plot)"/>
+    </include>
+</launch>
