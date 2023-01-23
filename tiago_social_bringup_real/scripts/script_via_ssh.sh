@@ -8,16 +8,18 @@ if [ "$#" -eq 0 ]; then
     echo "You have to provide relative path to the script that will be executed remotely..."
     exit 1
 fi
-if [ "$#" -ge 2 ]; then
+if [ "$#" -ge 4 ]; then
     echo "Illegal number of parameters"
     exit 2
 fi
 
 SCRIPT="$1"
 TIAGO_HOSTNAME="tiago-76c"
+REMOTE_USER=$2
+REMOTE_PASSWORD=$3
 
-echo "Going to execute $SCRIPT on the remote $TIAGO_HOSTNAME..."
+echo "Going to execute '$SCRIPT' on the remote '$TIAGO_HOSTNAME' as '$REMOTE_USER'..."
 sleep 3
 
 # It is not possible to ask for password during execution - must already start as root (otherwise pal/pal)
-cat $SCRIPT | sshpass -p 'palroot' ssh root@$TIAGO_HOSTNAME /bin/bash
+cat $SCRIPT | sshpass -p "$REMOTE_PASSWORD" ssh $REMOTE_USER@$TIAGO_HOSTNAME /bin/bash
