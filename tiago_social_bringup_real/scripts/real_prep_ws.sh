@@ -51,6 +51,7 @@ rosinstall -n . $SCRIPT_DIR/$WS_TEMP_DIRNAME/src/$WS_NAV_DIRNAME/tiago_social_ro
 cd $SCRIPT_DIR/$WS_TEMP_DIRNAME/src
 git clone https://github.com/ros-perception/laser_filters.git -b kinetic-devel
 git clone https://github.com/ros/dynamic_reconfigure.git -b melodic-devel
+git clone https://github.com/DLu/navigation_layers.git -b melodic
 
 # delete automatically generated rosinstalls to not copy it to remote
 cd $SCRIPT_DIR/$WS_TEMP_DIRNAME
