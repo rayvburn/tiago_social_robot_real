@@ -14,7 +14,11 @@
 #   - directory of the remote workspace is hard-coded
 #   - IGN_MATH_VER=4 is also hard-coded, valid for the Ubuntu 18
 #
+readonly REMOTE_USER=pal
+readonly REMOTE_HOSTNAME=tiago-76c.local
 readonly REMOTE_WS_DIR=/home/pal/.jkarwowski
+# could also play with $(whereis catkin)
+readonly REMOTE_CATKIN_CMD=/home/pal/.local/bin/catkin
 
 readonly SCRIPT_DIR="$(realpath $(dirname $0))"
 readonly WS_TEMP_DIRNAME=".temp_ws"
@@ -30,36 +34,40 @@ mkdir -p $WS_NAV_DIRNAME/src
 mkdir -p $WS_PERCEPTION_DIRNAME/src
 
 # clone repos of the first WS
-cd $WS_NAV_DIRNAME/src
+cd $SCRIPT_DIR/$WS_TEMP_DIRNAME/$WS_NAV_DIRNAME/src
 git clone --recurse-submodules git@github.com:rayvburn/tiago_social_robot.git -b pkg-separation
 git clone --recurse-submodules git@github.com:rayvburn/tiago_social_robot_real.git -b devel
 rosinstall -n . tiago_social_robot/tiago_navigation-melodic.rosinstall
 rosinstall -n . tiago_social_robot_real/tiago_experiments-melodic.rosinstall
 
 # clone repos of another WS (whose contents most likely won't change)
-cd ../../$WS_PERCEPTION_DIRNAME/src
+cd $SCRIPT_DIR/$WS_TEMP_DIRNAME/$WS_PERCEPTION_DIRNAME/src
 # Possible SPENCER perception problems:
 # https://github.com/spencer-project/spencer_people_tracking/tree/master/detection/monocular_detectors/3rd_party#important
-rosinstall -n . tiago_social_robot/tiago_perception-melodic.rosinstall
+rosinstall -n . $SCRIPT_DIR/$WS_TEMP_DIRNAME/$WS_NAV_DIRNAME/src/tiago_social_robot/tiago_perception-melodic.rosinstall
 # extra (some strange errors occur on the TIAGo computer)
 git clone https://github.com/ros/dynamic_reconfigure.git -b melodic-devel
 
 # delete automatically generated rosinstalls to not copy it to remote
 cd $SCRIPT_DIR/$WS_TEMP_DIRNAME
-rm $WS_NAV_DIRNAME/src/.rosinstall
-rm $WS_PERCEPTION_DIRNAME/src/.rosinstall
+rm $WS_NAV_DIRNAME/src/.rosinstall*
+rm $WS_PERCEPTION_DIRNAME/src/.rosinstall*
 
 # copy to remote
-cd ../..
-echo "Copying '$WS_NAV_DIRNAME' directory to the remote"
-sshpass -p "pal" scp -r $WS_NAV_DIRNAME pal@tiago-76c.local:$REMOTE_WS_DIR
-echo "Copying '$WS_PERCEPTION_DIRNAME' directory to the remote"
-sshpass -p "pal" scp -r $WS_PERCEPTION_DIRNAME pal@tiago-76c.local:$REMOTE_WS_DIR
+cd $SCRIPT_DIR/$WS_TEMP_DIRNAME
+echo
+echo "Copying '$WS_NAV_DIRNAME' directory into the remote '$REMOTE_WS_DIR' of '$REMOTE_HOSTNAME'"
+sshpass -p "$REMOTE_USER" scp -r $WS_NAV_DIRNAME $REMOTE_USER@$REMOTE_HOSTNAME:$REMOTE_WS_DIR
+echo "Copying '$WS_PERCEPTION_DIRNAME' directory into the remote '$REMOTE_WS_DIR' of '$REMOTE_HOSTNAME'"
+sshpass -p "$REMOTE_USER" scp -r $WS_PERCEPTION_DIRNAME $REMOTE_USER@$REMOTE_HOSTNAME:$REMOTE_WS_DIR
 
-# catkin ws config
-catkin_config="cd $REMOTE_WS_DIR/$WS_NAV_DIRNAME; catkin config -DIGN_MATH_VER=4"
-echo "Connecting to the remote to configure catkin workspace"
-sshpass -p 'pal' ssh pal@tiago-76c.local '$catkin_config'
+# catkin ws config - add custom compilation flags
+catkin_config="cd $REMOTE_WS_DIR/$WS_NAV_DIRNAME; $REMOTE_CATKIN_CMD config -DIGN_MATH_VER=4"
+echo "Connecting to the remote '$REMOTE_HOSTNAME' to configure catkin workspace at '$REMOTE_WS_DIR/$WS_NAV_DIRNAME'"
+echo "Command to be executed on remote '$catkin_config'"
+echo
+echo $catkin_config | sshpass -p "$REMOTE_USER" ssh $REMOTE_USER@$REMOTE_HOSTNAME /bin/bash
+echo
 
 # delete downloaded local sources
 cd $SCRIPT_DIR
