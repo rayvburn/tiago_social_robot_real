@@ -4,6 +4,8 @@
 #
 echo "executing script on '$HOSTNAME' host, user is '$(whoami)'"
 ROS_DISTRO="melodic"
+# non-root user for pip tools installation
+USER_NONROOT=pal
 
 # update apt repositories
 sudo apt update
@@ -17,7 +19,8 @@ sudo apt update
 # tools
 sudo -H apt-get install -y git
 sudo -H apt-get install -y python-pip
-pip install --user catkin-tools
+# NOTE: executing as a non-root user, ref: https://superuser.com/a/1081112
+sudo -i -u $USER_NONROOT bash -c 'echo; echo Installing with pip for user $USER with home at $HOME; pip install --user catkin-tools'
 
 # CMake
 # perl: warning: Falling back to a fallback locale ("en_GB.UTF-8")
