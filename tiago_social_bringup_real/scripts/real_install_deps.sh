@@ -57,9 +57,28 @@ sudo -H apt-get install -y ros-$ROS_DISTRO-move-base
 sudo -H apt-get install -y ros-$ROS_DISTRO-people-msgs
 sudo -H apt-get install -y ros-$ROS_DISTRO-laser-filters
 
-# hubero_local_planner dep
-sudo -H apt-get install -y libfuzzylite-dev
-
+# HuBeRo local planner dependency
+# NOTE1: Ubuntu 18 does not have 6.0 version of the library available as .deb package
+# NOTE2: catkin looks for .so only in /usr/lib/x86_64-linux-gnu/, below is the ugly way for a workaround but works
+if [ ! -d "/home/$USER_NONROOT/libraries/fuzzylite" ]
+then
+    # Build only once
+    sudo -i -u $USER_NONROOT bash -c 'echo; echo Starting installation of fuzzylite library for user $USER with home at $HOME'
+    sudo -i -u $USER_NONROOT bash -c 'mkdir -p $HOME/libraries'
+    sudo -i -u $USER_NONROOT bash -c 'cd $HOME/libraries'
+    sudo -i -u $USER_NONROOT bash -c 'git clone https://github.com/fuzzylite/fuzzylite.git'
+    sudo -i -u $USER_NONROOT bash -c 'cd fuzzylite/fuzzylite'
+    sudo -i -u $USER_NONROOT bash -c './build.sh'
+fi
+# Create symlink each time
+sudo ln -s /home/$USER_NONROOT/libraries/fuzzylite/fuzzylite/release/bin/libfuzzylite.so /usr/lib/x86_64-linux-gnu/
+sudo ln -s /home/$USER_NONROOT/libraries/fuzzylite/fuzzylite/release/bin/libfuzzylite.so.6.0 /usr/lib/x86_64-linux-gnu/
+echo
+echo "Created symlinks of the compiled library. Stat:"
+sudo -i -u $USER_NONROOT bash -c 'stat /usr/lib/x86_64-linux-gnu/libfuzzylite.so'
+echo
+sudo -i -u $USER_NONROOT bash -c 'stat /usr/lib/x86_64-linux-gnu/libfuzzylite.so.6.0'
+echo
 
 sleep 1
 echo
