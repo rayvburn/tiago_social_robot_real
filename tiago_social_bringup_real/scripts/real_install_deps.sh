@@ -16,6 +16,11 @@ sudo -H apt-get install -y curl
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 sudo apt update
 
+# update GCC etc.
+sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+sudo apt update
+sudo -H apt-get -y upgrade
+
 # tools
 sudo -H apt-get install -y git
 sudo -H apt-get install -y python-pip
