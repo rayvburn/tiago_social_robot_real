@@ -5,7 +5,6 @@
     <arg name="scenario" default="undock"/>
 
     <arg name="perception_launch" default="true"/>
-    <arg name="perception_viz" default="false"/>
     <arg name="perception_input_topic" default="/spencer/perception/tracked_persons"/>
 
     <arg name="navigation_launch" default="true"/>
@@ -19,6 +18,7 @@
     <arg name="narrow_laser_range" default="false"/>
 
     <!-- Run debugging tools -->
+    <arg name="run_perception_viz" default="false"/>
     <arg name="run_nav_viz" default="false"/>
     <arg name="run_reconfigure" default="false"/>
     <arg name="run_plot" default="false"/>
@@ -48,13 +48,13 @@
 
         <arg name="navigation_benchmark" value="$(arg navigation_benchmark)"/>
         <arg name="perception_launch" value="$(arg perception_launch)"/>
-        <arg name="perception_viz" value="$(arg perception_viz)"/>
         <arg name="perception_input_topic" value="$(arg perception_input_topic)"/>
         <arg name="publish_goal" value="$(arg publish_goal)"/>
         <arg name="publish_goal_delay" value="$(arg publish_goal_delay)"/>
         <arg name="goal_file" value="$(arg goal_file)"/>
 
         <!-- debugging tools -->
+        <arg name="run_perception_viz" value="$(arg run_perception_viz)"/>
         <arg name="run_nav_viz" value="$(arg run_nav_viz)"/>
         <arg name="run_reconfigure" value="$(arg run_reconfigure)"/>
         <arg name="run_plot" value="$(arg run_plot)"/>
