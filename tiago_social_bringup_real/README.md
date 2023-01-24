@@ -4,50 +4,108 @@ Scripts and launch files to startup a custom navigation stack.
 
 ## Instructions
 
-How to prepare a real TIAGo robot to run packages from this workspace.
-Note that provided scripts may have the hard-coded hostname of the TIAGo robot.
+Instructions show how to prepare a real TIAGo robot to run packages from a custom workspace located on TIAGo's computer. The main goal of instruction is not to touch the read-only partition. Note that provided scripts may have the hard-coded hostname of the TIAGo robot.
 
-### Install package dependencies
+### Initial setup
 
-This step must be executed after each restart of the robot system. Run the script via SSH:
+**1. Install package dependencies**
+
+You start with a clean system of the TIAGo robot and want to run some nodes that should be running on the same machine (e.g. they are sensitive to network lags).
+
+Note that `/usr/*` etc. directories will revert to their initial state after the robot's reboot. This does not apply to `home` directory with the `pal` user, where you have to establish a workspace.
+
+Before you try to build your custom workspace, upgrade all existing packages (`real_apt_upgrade.sh`) and install dependencies (`real_install_deps.sh`).
+From my experience, upgrading `apt` packages immediately breaks communication with the `rosmaster` running on the robot so let this not be a surprise in your case.
+
+The scripts given above can be started from the development machine and executed on the remote via SSH:
 
 ```sh
-cd scripts
-./script_via_ssh.sh real_install_deps.sh
+cd $(rospack find tiago_social_bringup_real)/scripts
+./script_via_ssh.sh real_apt_upgrade.sh root palroot
+./script_via_ssh.sh real_install_deps.sh root palroot
 ```
 
-### (only once) Prepare custom workspace
+Additional arguments mark username and password to get into the remote computer.
 
-Prepare your custom workspace in the home directory of the robot.
-Since files in the home directory are persistent, this must only be done once.
-After the first setup, only package dependencies must be installed on the robot's computer.
+**2. Prepare a custom workspace**
+
+Now, prepare a custom workspace. Files in the `pal` user's `home` directory are persistent, so you have to put your workspace setup somewhere there. This allows you to execute this step only once.
+
+The `real_prep_ws.sh` script clones all required workspace packages to the local directory and then `scp`s the directory to the remote.
+
+Note that compared to your development machine, you may need to extend the workspace packages list with extra packages that for some reason cannot be found in the PAL system (or are pre-built so do not expose the required `include` directory).
+
+Run the script on your development machine as:
 
 ```sh
-cd scripts
+cd $(rospack find tiago_social_bringup_real)/scripts
 ./real_prep_ws.sh
 ```
 
-### Launch custom configuration of the navigation stack
+**3. Build a workspace on the remote**
 
-First, you must stop the applications that start automatically and will conflict with the custom `move_base`:
+A typical command should do the job, provided the workspace was prepared well in the script above.
 
 ```sh
-cd scripts
-./script_via_ssh.sh real_stop_nav_stack.sh
+cd <WORKSPACE>
+catkin build
 ```
 
-(`real_stop_nav_stack` script may not be required to be run via SSH if you connected to the `rosmaster` of the real robot with your development machine)
+### Using existing setup
 
-Then, start the requested launch file on the robot's computer.
+The instructions below are valid, provided you have proceeded with the steps from the previous section.
 
-### Connecting to the robot with the development machine
+**1. Stopping PAL's autostarted applications**
 
-You must establish an Internet connection with the robot. To do so, run:
+To run a custom `move_base` configuration, you must stop the applications that start automatically and will conflict with it.
+
+The `real_stop_nav_stack.sh` script must be called before workspace dependencies installation. In general, all services for app control will be down very soon after a finished installation.
+
+It's best to stop the PAL's applications from the development machine as:
+
+```sh
+cd $(rospack find tiago_social_bringup_real)/scripts
+./script_via_ssh.sh real_stop_nav_stack.sh pal pal
+```
+
+Do not try to run these too soon after the robot's launch since some network interfaces may not be operating properly yet. A rotating head of the robot is a good indicator of its readiness.
+
+**2. Workspace dependencies installation**
+
+Since during the initial setup you break `rosmaster`, sooner or later you will have to reboot the computer and will have to install workspace dependencies again. The procedure at this stage is as follows.
+This step must be executed after each restart of the robot system. After the first setup, only package dependencies must be installed on the robot's computer (without upgrades of existing packages).
+
+```sh
+cd $(rospack find tiago_social_bringup_real)/scripts
+./script_via_ssh.sh real_install_deps.sh root palroot
+```
+
+**3. Launch a custom configuration of the navigation stack**
+
+Run, e.g., like this:
+
+```sh
+ssh -X pal@tiago-76c.local
+source <WS_DIR>/devel/setup.bash
+roslaunch tiago_social_experiments_real 012.launch
+```
+
+**4. Connecting the robot with the development machine**
+
+To establish a ROS connection with the robot's `rosmaster`, run:
 
 ```sh
 source devel_rosmaster_conn.sh
 ```
 
-### Web diagnostics interface
+## Web diagnostics interface
 
 TIAGo robot hosts a web diagnostics interface that is achievable at `http://tiago-<ID>.local:8080/`, e.g.: [`http://tiago-76c.local:8080/`](http://tiago-76c.local:8080/).
+
+## Troubleshooting
+
+- If a workspace has been built successfully but during the launch some errors occur, then it is most likely a dependency issue. Check dependencies of packages that are present in the workspace and repeat steps: `real_install_deps.sh`, rebuild the workspace, and reboot the robot's computer.
+
+- In case of some error during compilation (given that workspace packages are all good), try to rebuild the problematic package separately with `catkin build <package>`. Errors during compilation often happen when PAL's package gets overlayed with the package from the workspace or a package from the workspace depends on some common/system package (which PAL provides in a built form). Then, try to `catkin build` again. You may also try to run `real_apt_upgrade.sh`, `real_install_deps.sh` again. The latter often helps.
+
+- Upgrading apt packages will most likely cause `rosmaster` connection errors.
