@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- === ARGUMENTS ========================================================================== -->
-    <!-- (full|short|hard) -->
-    <arg name="scenario" default="hard"/>
+    <!-- (full|short|hard|undock) -->
+    <arg name="scenario" default="undock"/>
 
     <arg name="perception_launch" default="true"/>
     <arg name="perception_viz" default="false"/>
@@ -44,6 +44,7 @@
         <arg name="localization_pose_estimate" if="$(eval scenario == 'full')" value="$(find tiago_social_experiments_real)/config/012_pose_full.yaml"/>
         <arg name="localization_pose_estimate" if="$(eval scenario == 'hard')" value="$(find tiago_social_experiments_real)/config/012_pose_hard.yaml"/>
         <arg name="localization_pose_estimate" if="$(eval scenario == 'short')" value="$(find tiago_social_experiments_real)/config/012_pose_short.yaml"/>
+        <arg name="localization_pose_estimate" if="$(eval scenario == 'undock')" value="$(find tiago_social_experiments_real)/config/012_pose_undock.yaml"/>
 
         <arg name="navigation_benchmark" value="$(arg navigation_benchmark)"/>
         <arg name="perception_launch" value="$(arg perception_launch)"/>
