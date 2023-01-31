@@ -41,6 +41,7 @@ sudo -H apt-get install -y ros-$ROS_DISTRO-people-msgs
 sudo -H apt-get install -y ros-$ROS_DISTRO-laser-filters
 sudo -H apt-get install -y ros-$ROS_DISTRO-navigation-layers
 sudo -H apt-get install -y ros-$ROS_DISTRO-diagnostic-updater
+sudo -H apt-get install -y ros-$ROS_DISTRO-eband-local-planner
 
 # HuBeRo local planner dependency
 # NOTE1: Ubuntu 18 does not have 6.0 version of the library available as .deb package
