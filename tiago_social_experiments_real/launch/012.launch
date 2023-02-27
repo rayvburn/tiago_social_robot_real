@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- === ARGUMENTS ========================================================================== -->
-    <!-- (full|short|hard|undock) -->
-    <arg name="scenario" default="undock"/>
+    <!-- (devel|static|dynamic) -->
+    <arg name="scenario" default="devel"/>
+    <!-- scenario stage: (run|return) -->
+    <!-- 'run'  is used to start at begin pose and finish at goal, logging experiments data throughout the journey -->
+    <!-- 'return' is used to go back to scenario's start position while at the end -->
+    <arg name="stage" default=""/>
 
     <arg name="perception_launch" default="true"/>
     <arg name="perception_input_topic" default="/spencer/perception/tracked_persons"/>
@@ -41,22 +45,63 @@
         <arg name="global_planner" value="$(arg global_planner)"/>
         <arg name="local_planner" value="$(arg local_planner)"/>
 
-        <arg name="localization_pose_estimate" if="$(eval scenario == 'full')" value="$(find tiago_social_experiments_real)/config/012_pose_full.yaml"/>
-        <arg name="localization_pose_estimate" if="$(eval scenario == 'hard')" value="$(find tiago_social_experiments_real)/config/012_pose_hard.yaml"/>
-        <arg name="localization_pose_estimate" if="$(eval scenario == 'short')" value="$(find tiago_social_experiments_real)/config/012_pose_short.yaml"/>
-        <arg name="localization_pose_estimate" if="$(eval scenario == 'undock')" value="$(find tiago_social_experiments_real)/config/012_pose_undock.yaml"/>
-
-        <arg name="navigation_benchmark" value="$(arg navigation_benchmark)"/>
+        <!-- benchmark should be running only when selected and stage is 'run' -->
+        <arg name="navigation_benchmark" if="$(eval stage == 'run')" value="$(arg navigation_benchmark)"/>
+        <arg name="navigation_benchmark" if="$(eval stage == 'return')" value="false"/>
         <arg name="perception_launch" value="$(arg perception_launch)"/>
         <arg name="perception_input_topic" value="$(arg perception_input_topic)"/>
         <arg name="publish_goal" value="$(arg publish_goal)"/>
         <arg name="publish_goal_delay" value="$(arg publish_goal_delay)"/>
-        <arg name="goal_file" value="$(arg goal_file)"/>
 
         <!-- debugging tools -->
         <arg name="run_perception_viz" value="$(arg run_perception_viz)"/>
         <arg name="run_nav_viz" value="$(arg run_nav_viz)"/>
         <arg name="run_reconfigure" value="$(arg run_reconfigure)"/>
         <arg name="run_plot" value="$(arg run_plot)"/>
+
+        <!-- select localization estimate -->
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'static' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012_static_start_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'static' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012_static_finish_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'dynamic' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012_undock_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'dynamic' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012_dynamic_finish_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'devel')"
+            value="$(find tiago_social_experiments_real)/config/012_undock_amcl.yaml"
+        />
+
+        <!-- select goal -->
+        <arg name="goal_file"
+            if="$(eval scenario == 'static' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012_static_finish_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'static' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012_static_start_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'dynamic' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012_dynamic_finish_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'dynamic' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012_undock_pose.yaml"
+        />
+        <!-- prevent from running anywhere even with publish_goal -->
+        <arg name="goal_file"
+            if="$(eval scenario == 'devel')"
+            value="$(find tiago_social_experiments_real)/config/012_undock_pose.yaml"
+        />
     </include>
 </launch>

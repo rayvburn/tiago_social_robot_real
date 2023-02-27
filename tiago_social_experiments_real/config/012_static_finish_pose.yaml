@@ -1,0 +1,15 @@
+# goal is near 'undock' pose with an inverted orientation (i.e., robot ready to dock)
+header:
+  seq: 0,
+  stamp: now
+  frame_id: 'map'
+pose:
+  position:
+    x: -1.7737814188
+    y: -0.31319719553
+    z: 0.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 0.994288995435
+    w: 0.106721101743
