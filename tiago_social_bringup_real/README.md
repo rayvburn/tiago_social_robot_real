@@ -101,13 +101,19 @@ roslaunch tiago_social_experiments_real 012.launch
 To establish a ROS connection with the robot's `rosmaster`, run:
 
 ```sh
-source devel_rosmaster_conn.sh
+source $(rospack find tiago_social_bringup_real)/scripts/devel_rosmaster_conn.sh
 ```
 
 Then, on the development machine, you can:
 
 ```sh
 rviz -d $(rospack find tiago_social_navigation)/rviz/tiago_navigation.rviz
+```
+
+or simply use the provided launch file:
+
+```sh
+roslaunch tiago_social_experiments_real development_tools.launch
 ```
 
 ## Web diagnostics interface
