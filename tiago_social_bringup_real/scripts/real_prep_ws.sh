@@ -53,6 +53,9 @@ mkdir -p auxiliary
 cd auxiliary
 git clone https://github.com/ros-perception/laser_filters.git -b kinetic-devel
 git clone https://github.com/ros/dynamic_reconfigure.git -b melodic-devel
+# below are eband planner dependencies
+git clone https://github.com/ros-controls/control_toolbox.git -b melodic-devel
+git clone https://github.com/ros-controls/realtime_tools.git -b melodic-devel
 
 # delete automatically generated rosinstalls to not copy it to remote
 cd $SCRIPT_DIR/$WS_TEMP_DIRNAME
