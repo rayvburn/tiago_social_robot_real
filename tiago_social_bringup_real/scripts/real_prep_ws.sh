@@ -88,7 +88,16 @@ rm -rf $WS_TEMP_DIRNAME
 
 echo
 echo "Now, build the workspace on the REMOTE"
+echo "NOTE: building separate packages instead of a batch should successfully finish building process in most cases"
 echo
 echo "cd $REMOTE_WS_DIR/$WS_TEMP_DIRNAME"
+echo "catkin build costmap_2d"
+echo "source devel/setup.bash"
+echo "catkin build realtime_tools"
+echo "source devel/setup.bash"
+echo "catkin build control_toolbox"
+echo "source devel/setup.bash"
+echo "catkin build laser_filters dynamic_reconfigure"
+echo "source devel/setup.bash"
 echo "catkin build"
 echo
