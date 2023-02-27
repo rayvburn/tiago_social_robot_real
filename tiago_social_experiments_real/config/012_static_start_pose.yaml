@@ -1,0 +1,15 @@
+# NOTE: corresponds to the AMCL estimate from 012_pose_static
+header:
+  seq: 0,
+  stamp: now
+  frame_id: 'map'
+pose:
+  position:
+    x: 3.744
+    y: 7.865
+    z: 0.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: -0.946915
+    w: 0.3214841
