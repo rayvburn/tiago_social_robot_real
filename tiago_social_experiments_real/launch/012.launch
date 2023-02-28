@@ -9,7 +9,7 @@
     <arg name="stage" default=""/>
 
     <arg name="perception_launch" default="true"/>
-    <arg name="perception_input_topic" default="/spencer/perception/tracked_persons"/>
+    <arg name="perception_input_topic" default="/spencer/perception/tracked_persons_confirmed_by_HOG_or_upper_body"/>
 
     <arg name="navigation_launch" default="true"/>
     <arg name="navigation_benchmark" default="true"/>
