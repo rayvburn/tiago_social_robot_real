@@ -160,3 +160,9 @@ TIAGo robot hosts a web diagnostics interface that is achievable at `http://tiag
 - In case of some error during compilation (given that workspace packages are all good), try to rebuild the problematic package separately with `catkin build <package>`. Errors during compilation often happen when PAL's package gets overlayed with the package from the workspace or a package from the workspace depends on some common/system package (which PAL provides in a built form). Then, try to `catkin build` again. You may also try to run `real_apt_upgrade.sh`, `real_install_deps.sh` again. The latter often helps.
 
 - Upgrading apt packages will most likely cause `rosmaster` connection errors.
+
+- One may encounter wrong, unchangeable workspace path, like:
+  ```console
+  WARNING: Source space `/home/pal/src` does not yet exist
+  ```
+  Probably `catkin build` was called from the home directory. If so, delete `.catkin_tools`, `build`, `devel`, `logs` from the user's home directory.
