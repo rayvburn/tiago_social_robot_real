@@ -1,9 +1,9 @@
-# goal is near 'undock' pose with an inverted orientation (i.e., robot ready to dock)
+# goal is near 'undock' pose with an orientation pointing to standing humans
 {
   initial_cov_aa: 0.02,
   initial_cov_xx: 0.01,
   initial_cov_yy: 0.01,
-  initial_pose_a: 2.9277432,
-  initial_pose_x: -1.7737814188,
-  initial_pose_y: -0.31319719553
+  initial_pose_a: 0.307,
+  initial_pose_x: -1.302,
+  initial_pose_y: 0.263
 }
