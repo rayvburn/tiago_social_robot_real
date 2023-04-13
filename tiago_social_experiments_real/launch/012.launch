@@ -17,6 +17,7 @@
 
     <arg name="global_planner" default="navfn"/>
     <arg name="local_planner" default="teb"/>
+    <arg name="costmap_contexts" default="social"/>
     <arg name="nav_state" default="localization"/>
 
     <arg name="narrow_laser_range" default="false"/>
@@ -44,6 +45,7 @@
         <arg name="map_file" value="$(arg map_file)"/>
         <arg name="global_planner" value="$(arg global_planner)"/>
         <arg name="local_planner" value="$(arg local_planner)"/>
+        <arg name="costmap_contexts" value="$(arg costmap_contexts)"/>
 
         <!-- benchmark should be running only when selected and stage is 'run' -->
         <arg name="navigation_benchmark" if="$(eval stage == 'run')" value="$(arg navigation_benchmark)"/>
