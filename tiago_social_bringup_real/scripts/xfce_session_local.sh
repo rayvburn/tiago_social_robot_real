@@ -45,6 +45,7 @@ ${SOURCE_DEVEL_CMD}
 
 SOURCE_ROSMASTER_CMD="source $(rospack find tiago_social_bringup_real)/scripts/devel_rosmaster_conn.sh"
 WORKDIR_PKG="$(rospack find tiago_social_bringup_real)/scripts"
+DEVEL_TOOLS_CMD="roslaunch tiago_social_experiments_real development_tools.launch"
 
 # start a new terminal session
 xfce4-terminal --maximize \
@@ -58,7 +59,7 @@ xfce4-terminal --maximize \
         -H \
     --tab -T "RViz Local" \
         --working-directory=${WORKDIR_PKG} \
-        -e "bash -c '${SOURCE_ROS}; ${SOURCE_DEVEL_CMD}; ${SOURCE_ROSMASTER_CMD}; bash'" \
+        -e "bash -c '${SOURCE_ROS}; ${SOURCE_DEVEL_CMD}; ${SOURCE_ROSMASTER_CMD}; echo ${DEVEL_TOOLS_CMD}; bash'" \
         -H \
     --tab -T "Diagnostics local" \
         --working-directory=${WORKDIR_PKG} \
