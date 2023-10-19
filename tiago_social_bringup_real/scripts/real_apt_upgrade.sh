@@ -14,8 +14,12 @@ sudo -H apt-get -y upgrade
 # tools
 sudo -H apt-get install -y git
 sudo -H apt-get install -y python-pip
+sudo -H apt-get install -y python3-pip
 # NOTE: executing as a non-root user, ref: https://superuser.com/a/1081112
 sudo -i -u $USER_NONROOT bash -c 'echo; echo Installing with pip for user $USER with home at $HOME; pip install --user catkin-tools'
+# virtualenv(s) to create venvs for Python-based planners
+sudo -i -u $USER_NONROOT bash -c 'echo; echo Installing with pip for user $USER with home at $HOME; pip install --user virtualenv'
+sudo -i -u $USER_NONROOT bash -c 'echo; echo Installing with pip for user $USER with home at $HOME; pip3 install --user virtualenv'
 
 # CMake
 # perl: warning: Falling back to a fallback locale ("en_GB.UTF-8")

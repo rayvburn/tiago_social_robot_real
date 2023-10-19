@@ -34,6 +34,9 @@ sudo -H apt-get install -y libsdl-dev
 sudo -H apt-get install -y libsdl2-dev
 sudo -H apt-get install -y libignition-common-dev
 
+# NOTE: python3 is required by the DRL planner (tested with Python 3.6.9)
+# TIAGo's computer already has Python 3.6.9 (otherwise `makealtinstall` from sources is required)
+
 sudo -H apt-get install -y libmove-base-msgs-dev
 sudo -H apt-get install -y ros-$ROS_DISTRO-move-base-msgs
 sudo -H apt-get install -y ros-$ROS_DISTRO-move-base
@@ -42,8 +45,16 @@ sudo -H apt-get install -y ros-$ROS_DISTRO-laser-filters
 sudo -H apt-get install -y ros-$ROS_DISTRO-navigation-layers
 sudo -H apt-get install -y ros-$ROS_DISTRO-diagnostic-updater
 sudo -H apt-get install -y ros-$ROS_DISTRO-eband-local-planner
+sudo -H apt-get install -y ros-$ROS_DISTRO-laser-geometry
+sudo -H apt-get install -y ros-$ROS_DISTRO-pcl-conversions
+sudo -H apt-get install -y ros-$ROS_DISTRO-pcl-ros
+# required by some local-planner-specific nodes for sensor data processing (`tiago_social_navigation` package)
+sudo -H apt-get install -y ros-$ROS_DISTRO-ira-laser-tools
+# both required by the DRL-VO local planner
+sudo -H apt-get install -y ros-$ROS_DISTRO-sophus
+sudo -H apt-get install -y ros-$ROS_DISTRO-pointcloud-to-laserscan
 
-# HuBeRo local planner dependency
+# HuMAP local planner dependency
 # NOTE1: Ubuntu 18 does not have 6.0 version of the library available as .deb package
 # NOTE2: catkin looks for .so only in /usr/lib/x86_64-linux-gnu/, below is the ugly way for a workaround but works
 if [ ! -d "/home/$USER_NONROOT/libraries/fuzzylite" ]

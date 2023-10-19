@@ -14,7 +14,7 @@ if [ "$#" -ge 4 ]; then
 fi
 
 SCRIPT="$1"
-TIAGO_HOSTNAME="tiago-76c"
+TIAGO_HOSTNAME="tiago-76c.local"
 REMOTE_USER=$2
 REMOTE_PASSWORD=$3
 

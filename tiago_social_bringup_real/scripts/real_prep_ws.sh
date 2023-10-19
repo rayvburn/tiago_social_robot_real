@@ -21,7 +21,7 @@ readonly REMOTE_WS_DIR=/home/pal/.jkarwowski
 readonly REMOTE_CATKIN_CMD=/home/pal/.local/bin/catkin
 
 readonly SCRIPT_DIR="$(realpath $(dirname $0))"
-readonly WS_TEMP_DIRNAME="ws_ros"
+readonly WS_TEMP_DIRNAME="ws_ros_humap"
 # subdirectory names
 readonly WS_NAV_DIRNAME=social_nav
 readonly WS_PERCEPTION_DIRNAME=perception
