@@ -79,6 +79,25 @@ cd $SCRIPT_DIR/$WS_TEMP_DIRNAME
 rm src/$WS_NAV_DIRNAME/.rosinstall*
 rm src/$WS_PERCEPTION_DIRNAME/.rosinstall*
 
+# create a (first) building script for remote
+cd $SCRIPT_DIR/$WS_TEMP_DIRNAME
+build_script_name="first_build_sequence.sh"
+echo '#!/bin/bash' > $build_script_name
+echo "cd $REMOTE_WS_DIR/$WS_TEMP_DIRNAME" >> $build_script_name
+echo "catkin build costmap_2d" >> $build_script_name
+echo "source devel/setup.bash" >> $build_script_name
+echo "catkin build realtime_tools" >> $build_script_name
+echo "source devel/setup.bash" >> $build_script_name
+echo "catkin build control_toolbox" >> $build_script_name
+echo "source devel/setup.bash" >> $build_script_name
+echo "catkin build laser_filters dynamic_reconfigure" >> $build_script_name
+echo "source devel/setup.bash" >> $build_script_name
+echo "catkin build" >> $build_script_name
+echo "echo" >> $build_script_name
+echo 'echo "Next builds can be simply done with catkin build"' >> $build_script_name
+echo "echo" >> $build_script_name
+chmod +x $build_script_name
+
 # copy to remote
 cd $SCRIPT_DIR
 echo
@@ -99,22 +118,18 @@ echo
 echo $catkin_config | sshpass -p "$REMOTE_USER" ssh $REMOTE_USER@$REMOTE_HOSTNAME /bin/bash
 echo
 
-# delete downloaded local sources
-cd $SCRIPT_DIR
-rm -rf $WS_TEMP_DIRNAME
-
 echo
 echo "Now, build the workspace on the REMOTE"
 echo "NOTE: building separate packages instead of a batch should successfully finish building process in most cases"
+echo "Use the provided script in the workspace's main directory:"
 echo
-echo "cd $REMOTE_WS_DIR/$WS_TEMP_DIRNAME"
-echo "catkin build costmap_2d"
-echo "source devel/setup.bash"
-echo "catkin build realtime_tools"
-echo "source devel/setup.bash"
-echo "catkin build control_toolbox"
-echo "source devel/setup.bash"
-echo "catkin build laser_filters dynamic_reconfigure"
-echo "source devel/setup.bash"
-echo "catkin build"
+echo "  $WS_TEMP_DIRNAME/$build_script_name"
 echo
+echo "Or do it manually following these steps:"
+echo
+echo "$(cat $SCRIPT_DIR/$WS_TEMP_DIRNAME/$build_script_name)"
+echo
+
+# delete collected local resources
+cd $SCRIPT_DIR
+rm -rf $WS_TEMP_DIRNAME
