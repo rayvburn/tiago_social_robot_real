@@ -41,6 +41,12 @@ git clone --recurse-submodules git@github.com:rayvburn/tiago_social_robot_real.g
 rosinstall -n . tiago_social_robot/tiago_navigation-melodic.rosinstall
 rosinstall -n . tiago_social_robot_real/tiago_experiments-melodic.rosinstall
 
+# extra dependencies of the DRL-VO
+## path - see relevant section in the `tiago_navigation` rosinstall file
+cd $SCRIPT_DIR/$WS_TEMP_DIRNAME/src/$WS_NAV_DIRNAME/drl_vo/drl_vo_nav/setup
+## script setting up the DRL-VO dependencies
+./setup_deps_common.sh
+
 # clone repos of another WS (whose contents most likely won't change)
 cd $SCRIPT_DIR/$WS_TEMP_DIRNAME/src/$WS_PERCEPTION_DIRNAME
 # Possible SPENCER perception problems:
@@ -56,6 +62,17 @@ git clone https://github.com/ros/dynamic_reconfigure.git -b melodic-devel
 # below are eband planner dependencies
 git clone https://github.com/ros-controls/control_toolbox.git -b melodic-devel
 git clone https://github.com/ros-controls/realtime_tools.git -b melodic-devel
+# the workaround below is related to the issue with one of the DRL-VO dependencies;
+# TIAGo's computer has Sophus already installed, but during the compilation of `ecl_linear_algebra`,
+# CMake throws "get_target_property() called with non-existent target "Sophus::Sophus"
+# discussed here: https://github.com/strasdat/Sophus/issues/247#issuecomment-630833938
+git clone https://github.com/strasdat/Sophus.git -b main-1.x
+# path to the directory on the target machine
+sophus_headers_dir="$REMOTE_WS_DIR/$WS_TEMP_DIRNAME/src/auxiliary/Sophus/sophus"
+# change the content of the file stored on the host machine - replace ${sophus_INCLUDE_DIRS} which is empty (?)
+sed -i \
+    's#\${sophus_INCLUDE_DIRS}#'"$sophus_headers_dir"'#g' \
+    $SCRIPT_DIR/$WS_TEMP_DIRNAME/src/$WS_NAV_DIRNAME/drl_vo/drl_vo_common/ecl_core/ecl_linear_algebra/CMakeLists.txt
 
 # delete automatically generated rosinstalls to not copy it to remote
 cd $SCRIPT_DIR/$WS_TEMP_DIRNAME

@@ -167,6 +167,18 @@ TIAGo robot hosts a web diagnostics interface that is achievable at `http://tiag
 
 - In case of some error during compilation (given that workspace packages are all good), try to rebuild the problematic package separately with `catkin build <package>`. Errors during compilation often happen when PAL's package gets overlayed with the package from the workspace or a package from the workspace depends on some common/system package (which PAL provides in a built form). Then, try to `catkin build` again. You may also try to run `real_apt_upgrade.sh`, `real_install_deps.sh` again. The latter often helps.
 
+- One of the packages in the workspace uses the `sophus` library which may cause the issue discussed [here](https://github.com/strasdat/Sophus/issues/247#issuecomment-630833938) when building on the robot's computer (not observed on the development machine). One workaround for the following errors has already been implemented in the workspace preparation script, but if one is still getting:
+  ```console
+  CMake Error at CMakeLists.txt:29 (get_target_property):
+  get_target_property() called with non-existent target "Sophus::Sophus".
+  ```
+  then calling these on the robot's computer:
+  ```sh
+  cd /opt/pal/ferrum/lib/cmake/Sophus
+  sudo mv SophusConfig.cmake SophusBackupConfig.backup_cmake
+  ```
+  might help (must be done after each reboot if recompilation is performed).
+
 - Upgrading apt packages will most likely cause `rosmaster` connection errors.
 
 - One may encounter wrong, unchangeable workspace path, like:

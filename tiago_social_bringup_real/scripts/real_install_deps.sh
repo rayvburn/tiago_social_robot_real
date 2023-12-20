@@ -33,6 +33,8 @@ sudo -H apt-get install -y libsvm-dev
 sudo -H apt-get install -y libsdl-dev
 sudo -H apt-get install -y libsdl2-dev
 sudo -H apt-get install -y libignition-common-dev
+# required by Sophus library
+sudo -H apt-get install -y libfmt-dev
 
 # NOTE: python3 is required by the DRL planner (tested with Python 3.6.9)
 # TIAGo's computer already has Python 3.6.9 (otherwise `makealtinstall` from sources is required)
