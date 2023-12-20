@@ -8,6 +8,14 @@ Instructions show how to prepare a real TIAGo robot to run packages from a custo
 
 ### Initial setup
 
+First, make sure that the partition on the robot's computer is read-only:
+
+```sh
+grep "[[:space:]]ro[[:space:],]" /proc/mounts
+```
+
+See [this answer](https://serverfault.com/a/349025) for the output interpretation.
+
 **1. Install package dependencies**
 
 You start with a clean system of the TIAGo robot and want to run some nodes that should be running on the same machine (e.g. they are sensitive to network lags).
