@@ -8,15 +8,15 @@ if [ "$#" -eq 0 ]; then
     echo "You have to provide relative path to the script that will be executed remotely..."
     exit 1
 fi
-if [ "$#" -ge 4 ]; then
+if [ "$#" -ge 5 ]; then
     echo "Illegal number of parameters"
     exit 2
 fi
 
 SCRIPT="$1"
-TIAGO_HOSTNAME="tiago-76c.local"
 REMOTE_USER=$2
 REMOTE_PASSWORD=$3
+TIAGO_HOSTNAME="${4:-tiago-76c.local}"
 
 echo "Going to execute '$SCRIPT' on the remote '$TIAGO_HOSTNAME' as '$REMOTE_USER'..."
 sleep 3
