@@ -14,6 +14,6 @@ cd $SCRIPT_DIR
 ./script_via_ssh.sh real_install_deps.sh root palroot $ROBOT_IP
 ./script_via_ssh.sh real_apt_upgrade.sh root palroot $ROBOT_IP
 ./script_via_ssh.sh real_install_deps.sh root palroot $ROBOT_IP
-./real_prep_ws.sh
+./real_prep_ws.sh pal $ROBOT_IP
 echo ""
 echo "Now, build the workspace on the remote. Follow the given instructions"
