@@ -76,6 +76,13 @@ sed -i \
     's#\${sophus_INCLUDE_DIRS}#'"$sophus_headers_dir"'#g' \
     $SCRIPT_DIR/$WS_TEMP_DIRNAME/src/$WS_NAV_DIRNAME/drl_vo/drl_vo_common/ecl_core/ecl_linear_algebra/CMakeLists.txt
 
+# workaround to avoid
+#   ImportError: libcublas.so.10.0: cannot open shared object file: No such file or directory
+# when
+#   python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+# which also happens when launching the DRL planner one the TIAGo computer
+sed -i '/tensorflow_gpu/d' $SCRIPT_DIR/$WS_TEMP_DIRNAME/src/$WS_NAV_DIRNAME/drl/drl_local_planner/requirements.txt
+
 # delete automatically generated rosinstalls to not copy it to remote
 cd $SCRIPT_DIR/$WS_TEMP_DIRNAME
 rm src/$WS_NAV_DIRNAME/.rosinstall*

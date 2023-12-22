@@ -35,6 +35,12 @@ sudo -H apt-get install -y libsdl2-dev
 sudo -H apt-get install -y libignition-common-dev
 # required by Sophus library
 sudo -H apt-get install -y libfmt-dev
+# required by the CADRL-ROS (not python3-tk) (problems when installed by the venv's pip)
+sudo -H apt-get install -y python-tk
+# required by the DRL planner
+sudo -H apt-get install -y python3-pkg-resources
+# required by the venv of DRL-VO
+sudo -H apt-get install -y libffi-dev
 
 # NOTE: python3 is required by the DRL planner (tested with Python 3.6.9)
 # TIAGo's computer already has Python 3.6.9 (otherwise `makealtinstall` from sources is required)
