@@ -14,14 +14,16 @@
 #   - directory of the remote workspace is hard-coded
 #   - IGN_MATH_VER=4 is also hard-coded, valid for the Ubuntu 18
 #
-readonly REMOTE_USER=pal
-readonly REMOTE_HOSTNAME=tiago-76c.local
-readonly REMOTE_WS_DIR=/home/pal/.jkarwowski
+readonly REMOTE_USER="${1:-pal}"
+readonly REMOTE_HOSTNAME="${2:-tiago-76c.local}"
+readonly REMOTE_WS_DIR="${3:-/home/pal/.jkarwowski}"
+readonly WS_TEMP_DIRNAME="${4:-ws_ros_humap}"
 # could also play with $(whereis catkin)
-readonly REMOTE_CATKIN_CMD=/home/pal/.local/bin/catkin
+readonly REMOTE_CATKIN_CMD="${5:-/home/pal/.local/bin/catkin}"
 
-readonly SCRIPT_DIR="$(realpath $(dirname $0))"
-readonly WS_TEMP_DIRNAME="ws_ros_humap"
+# Ref: https://stackoverflow.com/a/246128
+readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 # subdirectory names
 readonly WS_NAV_DIRNAME=social_nav
 readonly WS_PERCEPTION_DIRNAME=perception
