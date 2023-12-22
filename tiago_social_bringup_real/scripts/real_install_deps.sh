@@ -3,9 +3,9 @@
 # This is only executive part of the script, use piping via SSH, e.g., https://serverfault.com/a/215757
 #
 echo "executing script on '$HOSTNAME' host, user is '$(whoami)'"
-ROS_DISTRO="melodic"
+ROS_DISTRO="${1:-melodic}"
 # non-root user for pip tools installation
-USER_NONROOT=pal
+USER_NONROOT="${2:-pal}"
 
 # update apt repositories
 sudo apt update
