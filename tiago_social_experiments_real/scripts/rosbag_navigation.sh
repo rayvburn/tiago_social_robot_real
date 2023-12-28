@@ -73,6 +73,7 @@ rosbag record --output-name ${BAG_NAME} \
     /spencer/perception/tracked_persons_orientation_fixed \
     \
     /move_base/GlobalPlanner/plan \
+    /move_base/NavfnROS/plan \
     \
     /move_base/HuberoPlannerROS/global_plan \
     /move_base/HuberoPlannerROS/global_plan_pruned \
@@ -142,6 +143,19 @@ rosbag record --output-name ${BAG_NAME} \
     /move_base/local_planner/path_marker \
     /move_base/local_planner/path_marker_array \
     /move_base/local_planner/pose_marker \
-    /move_base/local_planner/pose_marker_array
+    /move_base/local_planner/pose_marker_array \
+    \
+    /rl_agent/wp \
+    /rl_agent/planner_markers \
+    /rl_agent/action \
+    /rl_agent/done \
+    /rl_agent/trigger_agent \
+    /state_scan \
+    /wp_vis1 \
+    /wp_vis2 \
+    /wp_vis3 \
+    /wp_vis4 \
+    /reward
+
 
 echo "Finished rosbag recording. Output saved to a file ${BAG_NAME}.bag"
