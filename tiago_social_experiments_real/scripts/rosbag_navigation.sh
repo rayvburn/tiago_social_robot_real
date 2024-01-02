@@ -75,15 +75,15 @@ rosbag record --output-name ${BAG_NAME} \
     /move_base/GlobalPlanner/plan \
     /move_base/NavfnROS/plan \
     \
-    /move_base/HuberoPlannerROS/global_plan \
-    /move_base/HuberoPlannerROS/global_plan_pruned \
-    /move_base/HuberoPlannerROS/local_plan \
-    /move_base/HuberoPlannerROS/planner_state \
-    /move_base/HuberoPlannerROS/trajectories \
-    /move_base/HuberoPlannerROS/vis/dist_obstacle \
-    /move_base/HuberoPlannerROS/vis/marker \
-    /move_base/HuberoPlannerROS/vis/marker_array \
-    /move_base/HuberoPlannerROS/vis/path \
+    /move_base/HumapPlannerROS/global_plan \
+    /move_base/HumapPlannerROS/global_plan_pruned \
+    /move_base/HumapPlannerROS/local_plan \
+    /move_base/HumapPlannerROS/planner_state \
+    /move_base/HumapPlannerROS/trajectories \
+    /move_base/HumapPlannerROS/vis/dist_obstacle \
+    /move_base/HumapPlannerROS/vis/marker \
+    /move_base/HumapPlannerROS/vis/marker_array \
+    /move_base/HumapPlannerROS/vis/path \
     \
     /move_base/DWAPlannerROS/global_plan \
     /move_base/DWAPlannerROS/local_plan \
