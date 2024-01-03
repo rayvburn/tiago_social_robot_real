@@ -41,6 +41,9 @@
     <arg name="localization_pose_estimate" default="provide_a_valid_YAML_with_initial_sim_pose_for_AMCL"/>
 
     <!-- === NODES ============================================================================== -->
+    <!-- Handy stuff for the post-experiment analysis -->
+    <node pkg="tiago_social_experiments_real" type="echo_timestamp.sh" name="echo_roslaunch_timestamp" output="screen"/>
+
     <include file="$(find tiago_social_bringup)/launch/nav_perception_bringup.launch">
         <arg name="nav_state" value="$(arg nav_state)"/>
         <arg name="narrow_laser_range" value="$(arg narrow_laser_range)"/>
