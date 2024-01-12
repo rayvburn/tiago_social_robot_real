@@ -14,6 +14,13 @@ First, make sure that the partition on the robot's computer is read-only:
 grep "[[:space:]]ro[[:space:],]" /proc/mounts
 ```
 
+This kind of output appears when the partition is read-only:
+
+```console
+/dev/sda1 /media/root-ro ext4 ro,relatime,data=ordered 0 0
+tmpfs /sys/fs/cgroup tmpfs ro,nosuid,nodev,noexec,mode=755 0 0
+```
+
 See [this answer](https://serverfault.com/a/349025) for the output interpretation.
 
 **1. Install package dependencies**
@@ -186,3 +193,25 @@ TIAGo robot hosts a web diagnostics interface that is achievable at `http://tiag
   WARNING: Source space `/home/pal/src` does not yet exist
   ```
   Probably `catkin build` was called from the home directory. If so, delete `.catkin_tools`, `build`, `devel`, `logs` from the user's home directory.
+
+- Missing packages: try to additionally install these before the first compilation:
+  ```bash
+  sudo apt install ros-melodic-people-msgs
+  sudo apt install ros-melodic-ira-laser-tools
+  ```
+
+- Missing header while compiling `srpb_move_base`:
+  ```console
+  In file included from <WS_DIR>/src/social_nav/benchmark/srpb_move_base/src/move_base.cpp:38:0:
+  <WS_DIR>/src/social_nav/benchmark/srpb_move_base/include/move_base/move_base.h:60:10: fatal error: move_base/MoveBaseConfig.h: No such file or directory
+  #include "move_base/MoveBaseConfig.h"
+  ```
+  An ugly workaround is to copy a header from `<WS_DIR>/devel/include/move_base/MoveBaseConfig.h` to `<WS_DIR>/src/social_nav/benchmark/srpb_move_base/include/move_base/MoveBaseConfig.h` and recompile
+
+- Lack of communication despite running `devel_rosmaster_conn.sh`
+  Add the following in `/etc/hosts`](http://www.faqs.org/docs/securing/chap9sec95.html):
+  ```text
+  192.168.18.66 tiago-76c
+  ```
+
+- `tiago_sim_integration` package has LFS-tracked files (maps) which may not be properly loaded using `rosinstall` tool; it's safer to clone it by hand
