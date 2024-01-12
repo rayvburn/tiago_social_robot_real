@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- === ARGUMENTS ========================================================================== -->
-    <!-- (devel|static|dynamic) -->
+    <!-- (devel|static|dynamic|passing_in_front|overtaking|crossing|hall_passing_group) -->
     <arg name="scenario" default="devel"/>
     <!-- scenario stage: (run|return) -->
     <!-- 'run'  is used to start at begin pose and finish at goal, logging experiments data throughout the journey -->
@@ -34,7 +34,19 @@
     <arg name="goal_file" value="$(find tiago_social_experiments_real)/config/012_goal.yaml"/>
 
     <!-- Location-specific -->
-    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_sim_localization/map.yaml"/>
+    <!-- Some scenarios require only the map covering only the laboratory space (backward compatibility for reproducing
+    the SRPB experiments) -->
+    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_sim_localization/map.yaml"
+        if="$(eval scenario == 'static' or scenario == 'dynamic')"
+    />
+    <!-- Other scenarios require/are adjusted to the map covering the laboratory with the neighbouring corridor -->
+    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_extended_ftl_sim_localization/extended_map_lab_deletions_and_additions.yaml"
+        if="$(eval scenario == 'passing_in_front' or scenario == 'overtaking' or scenario == 'crossing' or scenario == 'hall_passing_group')"
+    />
+    <!-- Devel should use the most recent map available -->
+    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_extended_ftl_sim_localization/extended_map_lab_deletions_and_additions.yaml"
+        if="$(eval scenario == 'devel')"
+    />
     <arg name="allow_clearing_map_obstacles" default="true"/>
 
     <!-- === NODES ============================================================================== -->
@@ -64,48 +76,117 @@
         <arg name="run_plot" value="$(arg run_plot)"/>
 
         <!-- select localization estimate -->
+        <!-- older scenarios -->
         <arg name="localization_pose_estimate"
             if="$(eval scenario == 'static' and stage == 'run')"
-            value="$(find tiago_social_experiments_real)/config/012_static_start_amcl.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/static/start_amcl.yaml"
         />
         <arg name="localization_pose_estimate"
             if="$(eval scenario == 'static' and stage == 'return')"
-            value="$(find tiago_social_experiments_real)/config/012_static_finish_amcl.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/static/finish_amcl.yaml"
         />
         <arg name="localization_pose_estimate"
             if="$(eval scenario == 'dynamic' and stage == 'run')"
-            value="$(find tiago_social_experiments_real)/config/012_undock_amcl.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/undock_amcl.yaml"
         />
         <arg name="localization_pose_estimate"
             if="$(eval scenario == 'dynamic' and stage == 'return')"
-            value="$(find tiago_social_experiments_real)/config/012_dynamic_finish_amcl.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/dynamic/finish_amcl.yaml"
         />
         <arg name="localization_pose_estimate"
             if="$(eval scenario == 'devel')"
-            value="$(find tiago_social_experiments_real)/config/012_undock_amcl.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/undock_ftl_amcl.yaml"
+        />
+        <!-- newer scenarios -->
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'passing_in_front' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/passing_in_front/start_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'passing_in_front' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/passing_in_front/finish_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'overtaking' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/overtaking/start_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'overtaking' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/overtaking/finish_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'crossing' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/crossing/start_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'crossing' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/crossing/finish_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'hall_passing_group' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/hall_passing_group/start_amcl.yaml"
+        />
+        <arg name="localization_pose_estimate"
+            if="$(eval scenario == 'hall_passing_group' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/hall_passing_group/finish_amcl.yaml"
         />
 
         <!-- select goal -->
+        <!-- older scenarios -->
         <arg name="goal_file"
             if="$(eval scenario == 'static' and stage == 'run')"
-            value="$(find tiago_social_experiments_real)/config/012_static_finish_pose.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/static/finish_pose.yaml"
         />
         <arg name="goal_file"
             if="$(eval scenario == 'static' and stage == 'return')"
-            value="$(find tiago_social_experiments_real)/config/012_static_start_pose.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/static/start_pose.yaml"
         />
         <arg name="goal_file"
             if="$(eval scenario == 'dynamic' and stage == 'run')"
-            value="$(find tiago_social_experiments_real)/config/012_dynamic_finish_pose.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/dynamic/finish_pose.yaml"
         />
         <arg name="goal_file"
             if="$(eval scenario == 'dynamic' and stage == 'return')"
-            value="$(find tiago_social_experiments_real)/config/012_undock_pose.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/undock_pose.yaml"
         />
+        <!-- newer scenarios -->
+        <arg name="goal_file"
+            if="$(eval scenario == 'passing_in_front' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/passing_in_front/finish_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'passing_in_front' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/passing_in_front/start_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'overtaking' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/overtaking/finish_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'overtaking' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/overtaking/start_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'crossing' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/crossing/finish_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'crossing' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/crossing/start_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'hall_passing_group' and stage == 'run')"
+            value="$(find tiago_social_experiments_real)/config/012/hall_passing_group/finish_pose.yaml"
+        />
+        <arg name="goal_file"
+            if="$(eval scenario == 'hall_passing_group' and stage == 'return')"
+            value="$(find tiago_social_experiments_real)/config/012/hall_passing_group/start_pose.yaml"
+        />
+
         <!-- prevent from running anywhere even with publish_goal -->
         <arg name="goal_file"
             if="$(eval scenario == 'devel')"
-            value="$(find tiago_social_experiments_real)/config/012_undock_pose.yaml"
+            value="$(find tiago_social_experiments_real)/config/012/undock_ftl_pose.yaml"
         />
     </include>
 
