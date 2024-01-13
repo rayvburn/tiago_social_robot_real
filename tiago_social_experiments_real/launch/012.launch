@@ -197,4 +197,21 @@
     <node pkg="play_motion" type="move_joint" name="move_jnt_head_tilt" output="screen" args="head_2_joint -0.1 2.0"/>
     <!-- head (RGBD camera) pointing forward -->
     <node pkg="play_motion" type="move_joint" name="move_jnt_head_pan" output="screen" args="head_1_joint +0.0 2.0"/>
+
+    <!-- Real robot's PC has a poor performance hence it was necessary to lower the number of generated trajectories -->
+    <node if="$(eval local_planner == 'humap')" name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam"
+        args="set_from_parameters /move_base/HumapPlannerROS" output="screen" respawn="false"
+    >
+        <param name="sfm_aw_amplifier_min" value="+5.0"/>
+        <param name="sfm_aw_amplifier_max" value="+55.0"/>
+        <param name="sfm_aw_amplifier_granularity" value="+50.0"/>
+
+        <param name="sfm_bp_amplifier_min" value="+4.0"/>
+        <param name="sfm_bp_amplifier_max" value="+4.0"/>
+        <param name="sfm_bp_amplifier_granularity" value="+4.0"/>
+
+        <param name="sfm_bw_amplifier_min" value="+4.5"/>
+        <param name="sfm_bw_amplifier_max" value="+4.5"/>
+        <param name="sfm_bw_amplifier_granularity" value="+4.0"/>
+    </node>
 </launch>
