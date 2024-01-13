@@ -42,6 +42,9 @@ git clone --recurse-submodules git@github.com:rayvburn/tiago_social_robot.git -b
 git clone --recurse-submodules git@github.com:rayvburn/tiago_social_robot_real.git -b devel
 rosinstall -n . tiago_social_robot/tiago_navigation-melodic.rosinstall
 rosinstall -n . tiago_social_robot_real/tiago_experiments-melodic.rosinstall
+# rosinstall does not handle LFS-tracked files well (NOTE that it requires )
+rm -rf tiago_sim_integration
+git clone --recurse-submodules git@github.com:rayvburn/tiago_sim_integration.git -b 012-hubero-integration
 
 # extra dependencies of the DRL-VO
 ## path - see relevant section in the `tiago_navigation` rosinstall file

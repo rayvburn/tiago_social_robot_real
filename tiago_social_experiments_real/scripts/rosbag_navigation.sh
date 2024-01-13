@@ -13,7 +13,7 @@ if [ $# -gt 1 ]; then
   echo "Usage: $0 [<bag filename>]"
   exit 1
 elif [ $# -eq 1 ]; then
-  BAG_NAME="$1"
+  BAG_NAME="${BAG_NAME}_$1"
 fi
 
 echo "Preparing rosbag record to a file ${BAG_NAME}.bag"
@@ -75,12 +75,18 @@ rosbag record --output-name ${BAG_NAME} \
     /move_base/GlobalPlanner/plan \
     /move_base/NavfnROS/plan \
     \
+    /move_base/HumapPlannerROS/cost_cloud \
+    /move_base/HumapPlannerROS/explored_trajectories \
     /move_base/HumapPlannerROS/global_plan \
     /move_base/HumapPlannerROS/global_plan_pruned \
+    /move_base/HumapPlannerROS/group_intrusion_alt_goal_candidates \
+    /move_base/HumapPlannerROS/group_traj_prediction \
     /move_base/HumapPlannerROS/local_plan \
+    /move_base/HumapPlannerROS/people_traj_prediction \
     /move_base/HumapPlannerROS/planner_state \
-    /move_base/HumapPlannerROS/trajectories \
+    /move_base/HumapPlannerROS/ttc_prediction \
     /move_base/HumapPlannerROS/vis/dist_obstacle \
+    /move_base/HumapPlannerROS/vis/force_grid \
     /move_base/HumapPlannerROS/vis/marker \
     /move_base/HumapPlannerROS/vis/marker_array \
     /move_base/HumapPlannerROS/vis/path \
@@ -104,6 +110,7 @@ rosbag record --output-name ${BAG_NAME} \
     /move_base/CoHANLocalPlannerROS/local_plan_poses \
     /move_base/CoHANLocalPlannerROS/mode_text \
     /move_base/CoHANLocalPlannerROS/robot_next_pose \
+    \
     /move_base/HATebLocalPlannerROS/global_plan \
     /move_base/HATebLocalPlannerROS/human_local_plans_poses \
     /move_base/HATebLocalPlannerROS/local_plan \
@@ -114,6 +121,14 @@ rosbag record --output-name ${BAG_NAME} \
     /move_base/EBandPlannerROS/eband_visualization_array \
     /move_base/EBandPlannerROS/global_plan \
     /move_base/EBandPlannerROS/local_plan \
+    \
+    /move_base/SrlEBandPlannerROS/eband_visualization \
+    /move_base/SrlEBandPlannerROS/eband_visualization_array \
+    /move_base/SrlEBandPlannerROS/global_plan \
+    /move_base/SrlEBandPlannerROS/local_plan \
+    /move_base/SrlEBandPlannerROS/repaired_path_eband_visualization_array \
+    /move_base/SrlEBandPlannerROS/repaired_plan \
+    /move_base/SrlEBandPlannerROS/the_robot_does_not_possess_the_rear_laser \
     \
     /move_base/local_planner/action_marker \
     /move_base/local_planner/goal_marker \
