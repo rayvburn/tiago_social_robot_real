@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- === ARGUMENTS ========================================================================== -->
+    <arg name="perception_launch" default="true"/>
+    <!--
+        NOTE:
+            '/spencer/perception/tracked_persons'
+        topic provides more tracks (e.g., swivel chairs too), whereas
+            '/spencer/perception/tracked_persons_confirmed_by_HOG_or_upper_body'
+        topic provides more confident tracks but less of them.
+        There is also:
+            '/spencer/perception/tracked_persons_confirmed_by_HOG_or_upper_body_or_moving'
+    -->
+    <arg name="perception_input_topic" default="/spencer/perception/tracked_persons_confirmed_by_HOG_or_upper_body"/>
+
+    <arg name="navigation_launch" default="true"/>
+    <arg name="navigation_benchmark" default="true"/>
+    <arg name="external_map" default="false"/>
+
+    <arg name="global_planner" default="navfn"/>
+    <arg name="local_planner" default="teb"/>
+    <arg name="costmap_contexts" default="social"/>
+    <arg name="nav_state" default="localization"/>
+
+    <arg name="narrow_laser_range" default="false"/>
+
+    <!-- Run debugging tools -->
+    <arg name="run_perception_viz" default="false"/>
+    <arg name="run_nav_viz" default="false"/>
+    <arg name="run_reconfigure" default="false"/>
+    <arg name="run_plot" default="false"/>
+
+    <!-- Automatic publishing of navigation goal -->
+    <arg name="publish_goal" default="true"/>
+    <arg name="publish_goal_delay" default="15"/>
+    <arg name="goal_file" value="provide_a_valid_yaml_with_sim_PoseStamped"/>
+
+    <!-- Location-specific -->
+    <arg name="map_file" default="provide_a_valid_YAML_with_sim_map_metadata"/>
+    <arg name="allow_clearing_map_obstacles" default="true"/>
+    <arg name="localization_pose_estimate" default="provide_a_valid_YAML_with_initial_sim_pose_for_AMCL"/>
+
+    <!-- === NODES ============================================================================== -->
+    <!-- Handy stuff for the post-experiment analysis -->
+    <node pkg="tiago_social_experiments_real" type="echo_timestamp.sh" name="echo_roslaunch_timestamp" output="screen"/>
+
+    <include file="$(find tiago_social_bringup)/launch/nav_perception_bringup.launch">
+        <arg name="nav_state" value="$(arg nav_state)"/>
+        <arg name="narrow_laser_range" value="$(arg narrow_laser_range)"/>
+        <arg name="navigation_launch" value="$(arg navigation_launch)"/>
+        <arg name="external_map" value="$(arg external_map)"/>
+        <arg name="map_file" value="$(arg map_file)"/>
+        <arg name="allow_clearing_map_obstacles" value="$(arg allow_clearing_map_obstacles)"/>
+        <arg name="global_planner" value="$(arg global_planner)"/>
+        <arg name="local_planner" value="$(arg local_planner)"/>
+        <arg name="costmap_contexts" value="$(arg costmap_contexts)"/>
+
+        <arg name="localization_pose_estimate" value="$(arg localization_pose_estimate)"/>
+
+        <arg name="navigation_benchmark" value="$(arg navigation_benchmark)"/>
+        <arg name="perception_launch" value="$(arg perception_launch)"/>
+        <arg name="perception_input_topic" value="$(arg perception_input_topic)"/>
+        <arg name="publish_goal" value="$(arg publish_goal)"/>
+        <arg name="publish_goal_delay" value="$(arg publish_goal_delay)"/>
+        <arg name="goal_file" value="$(arg goal_file)"/>
+
+        <!-- debugging tools -->
+        <arg name="run_perception_viz" value="$(arg run_perception_viz)"/>
+        <arg name="run_nav_viz" value="$(arg run_nav_viz)"/>
+        <arg name="run_reconfigure" value="$(arg run_reconfigure)"/>
+        <arg name="run_plot" value="$(arg run_plot)"/>
+    </include>
+</launch>

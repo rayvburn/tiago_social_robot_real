@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Launch that may be used on the development machine (GUI) during scenario execution -->
+<launch>
+    <node pkg="rviz" name="rviz_nav" type="rviz" output="screen"
+        args="-d $(find tiago_social_navigation)/rviz/tiago_navigation.rviz">
+    </node>
+
+    <node pkg="rqt_reconfigure" name="rqt_reconfigure" type="rqt_reconfigure"></node>
+
+    <node pkg="rqt_plot" name="rqt_plot" type="rqt_plot"></node>
+</launch>

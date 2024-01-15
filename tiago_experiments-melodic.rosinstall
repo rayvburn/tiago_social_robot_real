@@ -1,0 +1,2 @@
+# only map is required from this package but it has multiple sim-related dependencies
+- git: {local-name: tiago_sim_integration, uri: 'https://github.com/RCPRG-ros-pkg/tiago_sim_integration.git', version: '012-hubero-integration'}
