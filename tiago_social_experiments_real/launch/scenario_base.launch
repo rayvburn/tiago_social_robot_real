@@ -33,7 +33,7 @@
     <!-- Automatic publishing of navigation goal -->
     <arg name="publish_goal" default="true"/>
     <arg name="publish_goal_delay" default="15"/>
-    <arg name="goal_file" value="provide_a_valid_yaml_with_sim_PoseStamped"/>
+    <arg name="goal_file" default="provide_a_valid_yaml_with_sim_PoseStamped"/>
 
     <!-- Location-specific -->
     <arg name="map_file" default="provide_a_valid_YAML_with_sim_map_metadata"/>
