@@ -50,7 +50,7 @@
     <arg name="allow_clearing_map_obstacles" default="false"/>
 
     <!-- === NODES ============================================================================== -->
-    <include file="$(find tiago_social_bringup)/launch/nav_perception_bringup.launch">
+    <include file="$(find tiago_social_experiments_real)/launch/scenario_base.launch">
         <arg name="nav_state" value="$(arg nav_state)"/>
         <arg name="narrow_laser_range" value="$(arg narrow_laser_range)"/>
         <arg name="navigation_launch" value="$(arg navigation_launch)"/>
