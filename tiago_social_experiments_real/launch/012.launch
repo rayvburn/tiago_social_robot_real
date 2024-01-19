@@ -202,16 +202,17 @@
     <node if="$(eval local_planner == 'humap')" name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam"
         args="set_from_parameters /move_base/HumapPlannerROS" output="screen" respawn="false"
     >
-        <param name="sfm_aw_amplifier_min" value="+5.0"/>
-        <param name="sfm_aw_amplifier_max" value="+55.0"/>
-        <param name="sfm_aw_amplifier_granularity" value="+50.0"/>
-
         <param name="sfm_bp_amplifier_min" value="+4.0"/>
         <param name="sfm_bp_amplifier_max" value="+4.0"/>
         <param name="sfm_bp_amplifier_granularity" value="+4.0"/>
 
+        <!-- Only 1 parameter value for static obstacle interaction forces -->
+        <param name="sfm_aw_amplifier_min" value="+1.0"/>
+        <param name="sfm_aw_amplifier_max" value="+1.0"/>
+        <param name="sfm_aw_amplifier_granularity" value="+1.0"/>
+
         <param name="sfm_bw_amplifier_min" value="+4.5"/>
         <param name="sfm_bw_amplifier_max" value="+4.5"/>
-        <param name="sfm_bw_amplifier_granularity" value="+4.0"/>
+        <param name="sfm_bw_amplifier_granularity" value="+1.0"/>
     </node>
 </launch>
