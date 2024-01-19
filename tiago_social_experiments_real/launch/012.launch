@@ -40,11 +40,11 @@
         if="$(eval scenario == 'static' or scenario == 'dynamic')"
     />
     <!-- Other scenarios require/are adjusted to the map covering the laboratory with the neighbouring corridor -->
-    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_extended_ftl_sim_localization/extended_map_lab_deletions_and_additions.yaml"
+    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_extended_ftl_sim_and_real_localization/extended_map_lab_adjusted_dimensions.yaml"
         if="$(eval scenario == 'passing_in_front' or scenario == 'overtaking' or scenario == 'crossing' or scenario == 'hall_passing_group')"
     />
     <!-- Devel should use the most recent map available -->
-    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_extended_ftl_sim_localization/extended_map_lab_deletions_and_additions.yaml"
+    <arg name="map_file" value="$(find tiago_sim_integration)/maps/012_extended_ftl_sim_and_real_localization/extended_map_lab_adjusted_dimensions.yaml"
         if="$(eval scenario == 'devel')"
     />
     <arg name="allow_clearing_map_obstacles" default="false"/>
