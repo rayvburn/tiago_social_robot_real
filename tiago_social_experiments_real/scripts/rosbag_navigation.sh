@@ -21,7 +21,7 @@ bag_file_name="${DEFAULT_BAG_NAME}-${desired_planner_id}-$2"
 # Lists with different planner_id names
 # Define a list as an array
 humap_topics=(
-    "/move_base/HumapPlannerROS/cost_cloud"
+    # "/move_base/HumapPlannerROS/cost_cloud" # very computationally expensive
     "/move_base/HumapPlannerROS/explored_trajectories"
     "/move_base/HumapPlannerROS/global_plan"
     "/move_base/HumapPlannerROS/global_plan_pruned"
@@ -32,7 +32,7 @@ humap_topics=(
     "/move_base/HumapPlannerROS/planner_state"
     "/move_base/HumapPlannerROS/ttc_prediction"
     "/move_base/HumapPlannerROS/vis/dist_obstacle"
-    "/move_base/HumapPlannerROS/vis/force_grid"
+    # "/move_base/HumapPlannerROS/vis/force_grid" # computationally expensive
     "/move_base/HumapPlannerROS/vis/marker"
     "/move_base/HumapPlannerROS/vis/marker_array"
     "/move_base/HumapPlannerROS/vis/path"
@@ -236,12 +236,8 @@ eval rosbag record --output-name ${bag_file_name} \
     /move_base/cancel \
     /move_base/current_goal \
     /move_base/feedback \
-    /move_base/global_costmap/costmap \
     /move_base/global_costmap/footprint \
-    /move_base/global_costmap/costmap_updates \
-    /move_base/local_costmap/costmap \
     /move_base/local_costmap/footprint \
-    /move_base/local_costmap/costmap_updates \
     /move_base_simple/goal \
     \
     /amcl_pose \
