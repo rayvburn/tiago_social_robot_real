@@ -15,6 +15,16 @@ A package that runs a TIAGo robot system to perform specific experiments on real
   ```sh
   rosservice call tiago_undock "{}"
   ```
+4. Create a separate directory for SRPB logs so they won't pollute the user's main directory on the target machine. Search for the `tiago_social_navigation/launch/move_base.launch` and change
+  ```xml
+  <arg name="benchmark_log_file" default="$(env HOME)/log_$(arg global_planner)_$(arg local_planner)_$(arg costmap_contexts).txt" unless="$(arg multiple)"/>
+  <arg name="benchmark_log_file" default="$(env HOME)/log_$(arg robot_namespace)_$(arg global_planner)_$(arg local_planner)_$(arg costmap_contexts).txt" if="$(arg multiple)"/>
+  ```
+  to:
+  ```xml
+  <arg name="benchmark_log_file" default="<PATH_TO_A_DIRECTORY_WITH_SRPB_LOGS>/log_$(arg global_planner)_$(arg local_planner)_$(arg costmap_contexts).txt" unless="$(arg multiple)"/>
+  <arg name="benchmark_log_file" default="<PATH_TO_A_DIRECTORY_WITH_SRPB_LOGS>/log_$(arg robot_namespace)_$(arg global_planner)_$(arg local_planner)_$(arg costmap_contexts).txt" if="$(arg multiple)"/>
+  ```
 
 ### On the development machine
 
